@@ -1,0 +1,16 @@
+open html in chrome - nothing there
+draw background color
+open in chrome - background color
+draw a single square
+open in chrome - single square
+draw a playing piece
+open in chrome
+go over coordinates
+handle input - one direction to start
+test in chrome
+write other 3 directions
+test in chrome
+draw a wall around our piece
+test
+get collision check working
+test
