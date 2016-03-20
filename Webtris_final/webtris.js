@@ -1,13 +1,13 @@
 /**
- * A tetris style game implemented in javascript using an HTML canvas for drawing. This is intended as a tool to teach game development
+ * A Tetris style game implemented in JavaScript using an HTML canvas for drawing. This is intended as a tool to teach game development
  * and computer science to the uninitiated.
  */
 
 /**
  * These are our constant values.
  *
- * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used instead of
- * "magic values/numbers" across the code.
+ * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used 
+ * instead of "magic values/numbers" across the code.
  */
 // The size of our board in pixels.
 var BOARD_WIDTH_PIXELS = 12 * 8;
@@ -20,7 +20,7 @@ var BOARD_Y_OFFSET_PIXELS = (300 - BOARD_HEIGHT_PIXELS) / 2;
 // Our base speed for forcefully moving the player piece down.
 var BASE_FRAMES_PER_DROP = 60;
 
-// Ascii key codes stored as constants for readability
+// ASCII key codes stored as constants for readability.
 var KEY_PRESS_LEFT = 37;
 var KEY_PRESS_RIGHT = 39;
 var KEY_PRESS_DOWN = 40;
@@ -29,11 +29,10 @@ var KEY_PRESS_Z = 90;
 
 /**
  * These are our game state variables. Variables are used to store pieces of data such as numbers, strings, boolean values, etc. 
- * A variable can be assigned a value, and the value may be changed via numerous operators + - * / =.
+ * A variable can be assigned a value, and the value may be changed via numerous operators: + - * / =.
  */
-
-// We define the shapes and positions of our pieces here. They are stored as a multidimensional array where the structure goes piece type, rotations, then a two dimensional array representing
-// the piece in a specific rotation.
+// We define the shapes and positions of our pieces here. They are stored as a multidimensional array where the structure goes: piece 
+// type, rotation(s), then a two dimensional array representing the piece in a specific rotation.
 var pieces = [
   // Our square shape and its rotations (which are identical).
   [
@@ -163,7 +162,7 @@ var board = null;
 var gameOver = false;
 // The image for a player piece.
 var pieceImage = null;
-// The image for the board's wall pieces.
+// The image for the board's wall piece.
 var boardImage = null;
 // Stores the key that was pressed.
 var playerKeyPress = 0;
@@ -174,7 +173,7 @@ var playerYIndex = 0;
 // The index in the array that identifies our active playing piece - either a square,
 // left/right zig zag, straight, "T" shape, or left/right "L" shapes.
 var playerPieceIndex = 0;
-// 
+// A way to reference our piece without the confusion of a multidimensional array.
 var playerPieceRef = null; 
 // The active playing piece's rotation index.
 var playerPieceRotation = 0;
@@ -186,9 +185,11 @@ var totalLinesRemoved = 0;
 var pieceCount = [0, 0, 0, 0, 0, 0, 0];
 // The number of frames since the last time we forced the players piece to drop.
 var frameCount = 0;
-// The number of pixels to vertically offset the players piece to make it appear it is slowly dropping. Updated each frame based on the current framesPerDrop.
+// The number of pixels to vertically offset the players piece to make it appear as if it is slowly dropping. Updated each frame based 
+// on the current framesPerDrop.
 var smoothScrollingValue = 0;
-// The current number of frames per forceful drop of the players piece. Updated whenever the player scores ten lines to slowly raise the game difficulty.
+// The current number of frames per forceful drop of the players piece. Updated whenever the player scores ten lines to slowly increase 
+// the game difficulty.
 var framesPerDrop = BASE_FRAMES_PER_DROP;
 
 /**
@@ -204,7 +205,7 @@ function onLoad() {
   pieceImage = document.getElementById("red_piece");
   boardImage = document.getElementById("gray_piece");
 
-  // Every time a key is pressed store it to be processed in the game loop.
+  // Every time a key is pressed, store it to be processed in the game loop.
   document.addEventListener('keydown', function(event) {
     playerKeyPress = event.keyCode;
   });
@@ -215,7 +216,7 @@ function onLoad() {
 
 /**
  * We define the structure of the board in a method so a new one can be created whenever a new game begins. A constant for
- * the boards definition would require us to copy to a board array each time the game starts, creating a new instance of
+ * the board's definition would require us to copy to a board array each time the game starts, creating a new instance of
  * the data is simpler.
  */
 function getNewBoard() {
@@ -295,6 +296,7 @@ function handleInput() {
   var yDelta = 0;
   var rotationDelta = 0;
 
+  // Force our player piece down a position if enough time has passed.
   if (frameCount > framesPerDrop) {
     yDelta ++;
     frameCount = 0;
@@ -319,7 +321,7 @@ function handleInput() {
   // We don't do anything for other key presses, including "up" because they
   // aren't a part of our game play.
 
-  // Reset our key press so that new user input may be easily identified next frame.
+  // Reset our key press so that new user input may be easily identified in the next frame.
   playerKeyPress = 0;
 
   // If the player or the drop rate caused a positive change in the y index check if the move causes a collision. If that
@@ -374,8 +376,8 @@ function handleInput() {
     smoothScrollingValue = 0;
   }
 
-  // Finally, if any x or y deltas still remain (they weren't consumed through
-  // placing a piece or ignored due to collision) then apply them to the player's position.
+  // Finally, if any x or y deltas still remain (they weren't used through placing a piece or ignored due to collision) 
+  // then apply them to the player's position.
   playerXIndex += xDelta;
   playerYIndex += yDelta;
 
@@ -405,7 +407,8 @@ function updateFramesPerDrop() {
 }
 
 /**
- * Draw the game by filling the back ground and board area with solid colors, then drawing the board, player piece, scores and piece totals. Also handles drawing the game over text.
+ * Draw the game by filling the background and board area with solid colors, then drawing the board, player piece, scores 
+ * and piece totals. Also handles drawing the "game over" text.
  */
 function drawGame() {
   // Set the background color of the canvas and fill the canvas.
@@ -417,14 +420,14 @@ function drawGame() {
   canvas.fillRect(BOARD_X_OFFSET_PIXELS, 16 + BOARD_Y_OFFSET_PIXELS, BOARD_WIDTH_PIXELS, BOARD_HEIGHT_PIXELS);
   canvas.fillRect(BOARD_X_OFFSET_PIXELS + 24, BOARD_Y_OFFSET_PIXELS, BOARD_WIDTH_PIXELS - 48, BOARD_HEIGHT_PIXELS);
 
-  // Draw the board
+  // Draw the board.
   drawArray(board, 0, 0);
 
   // Draw our current, active piece in its proper place.
   // We draw it here because it hasn't been permanently placed on the board.
   drawArray(playerPieceRef, playerXIndex, playerYIndex);
 
-  // Draw the score and line count message.
+  // Draw the score and line count messages.
   canvas.fillStyle = "white";
   canvas.font = "15px Arial";
   canvas.fillText("Score: " + score, 10, 20);
@@ -452,7 +455,8 @@ function drawArray(drawArray, xOffset, yOffset) {
         var image;
         if (value == 1) {
           image = pieceImage;
-        } else {
+        }
+		else {
           image = boardImage;
         }
         canvas.drawImage(image, BOARD_X_OFFSET_PIXELS + (x + xOffset) * 8, BOARD_Y_OFFSET_PIXELS + (y + yOffset) * 8);
@@ -564,6 +568,7 @@ function drawEachPiece() {
     canvas.font = "10px Arial";
     canvas.fillText(""+ pieceCount[piece], 35 + x, 145 + y);
 
+	// Get our next piece's position on the canvas ready.
     y += 40;
     if (y > 150) {
       y = 0;
