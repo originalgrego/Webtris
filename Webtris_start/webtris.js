@@ -13,16 +13,14 @@ function gameLoop() {
 }
 
 /**
- * Figure out what key was pressed, and move the piece. This method uses deltas for the player movements/rotations so that the delta can
- * be used in a "what if" scenario for determining if a player move is valid.
+ * Figure out what key was pressed, and move the piece.
  */
 function handleInput() {
 	
 }
 
 /**
- * Draw the game by filling the background and board area with solid colors, then drawing the board, player piece, scores 
- * and piece totals. Also handles drawing the "game over" text.
+ * Draw the game by filling the background with a solid color, draw the player piece, then drawing the board.
  */
 function drawGame() {
 	
@@ -47,8 +45,7 @@ var KEY_PRESS_Z = 90;
  * A variable can be assigned a value, and the value may be changed via numerous operators: + - * / =.
  */
 
-// We define the shapes and positions of our pieces here. They are stored as a multidimensional array where the structure goes: piece 
-// type, rotation(s), then a two dimensional array representing the piece in a specific rotation.
+// We define the shape of our piece here. It is stored as a two dimensional array representing the piece in a specific rotation.
 var piece = [[0, 1, 0],
 			 [0, 1, 0],
 			 [0, 1, 1]];
@@ -62,11 +59,10 @@ var boardImage = null;
 // Stores the key that was pressed.
 var playerKeyPress = 0;
 // The X position of our active playing piece, stored as an index into our board array, it starts in the middle of the board at position 5.
-var playerXIndex = 0;
+var playerXIndex = 5;
 // The Y position of our active playing piece, stored as an index into our board array, it starts off at the top at position 0.
-var playerYIndex = 1;
-// A reference to the current board's information: a multidimensional array where a wall is represented by
-// 2, a player piece by 1, an empty spot by 0, and the "game over" zone by -1.
+var playerYIndex = 0;
+// The board's information: a multidimensional array where a wall is represented by 2, and an empty spot by 0.
 var board = [
     [2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2],
     [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
