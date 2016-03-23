@@ -20,7 +20,7 @@ function handleInput() {
 }
 
 /**
- * Draw the game by filling the background with a solid color, draw the player piece, then drawing the board.
+ * Draw the game by filling the background with a solid color, draw the player piece, then draw the board.
  */
 function drawGame() {
 	
