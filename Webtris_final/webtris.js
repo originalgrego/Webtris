@@ -6,7 +6,7 @@
 /**
  * These are our constant values.
  *
- * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used 
+ * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used
  * instead of "magic values/numbers" across the code.
  */
 // The size of our board in pixels.
@@ -28,10 +28,10 @@ var KEY_PRESS_X = 88;
 var KEY_PRESS_Z = 90;
 
 /**
- * These are our game state variables. Variables are used to store pieces of data such as numbers, strings, boolean values, etc. 
+ * These are our game state variables. Variables are used to store pieces of data such as numbers, strings, boolean values, etc.
  * A variable can be assigned a value, and the value may be changed via numerous operators: + - * / =.
  */
-// We define the shapes and positions of our pieces here. They are stored as a multidimensional array where the structure goes: piece 
+// We define the shapes and positions of our pieces here. They are stored as a multidimensional array where the structure goes: piece
 // type, rotation(s), then a two dimensional array representing the piece in a specific rotation.
 var pieces = [
   // Our square shape and its rotations (which are identical).
@@ -181,20 +181,20 @@ var totalLinesRemoved = 0;
 var pieceCount = [0, 0, 0, 0, 0, 0, 0];
 // The number of frames since the last time we forced the players piece to drop.
 var frameCount = 0;
-// The number of pixels to vertically offset the players piece to make it appear as if it is slowly dropping. Updated each frame based 
+// The number of pixels to vertically offset the players piece to make it appear as if it is slowly dropping. Updated each frame based
 // on the current framesPerDrop.
 var smoothScrollingValue = 0;
-// The current number of frames per forceful drop of the players piece. Updated whenever the player scores ten lines to slowly increase 
+// The current number of frames per forceful drop of the players piece. Updated whenever the player scores ten lines to slowly increase
 // the game difficulty.
 var framesPerDrop = BASE_FRAMES_PER_DROP;
 // Stores each key press individually so that multiple presses may be decoded
 var keyPresses = {
-	KEY_PRESS_LEFT: false,
-	KEY_PRESS_RIGHT: false,
-	KEY_PRESS_DOWN: false,
-	KEY_PRESS_X: false,
-	KEY_PRESS_Z: false
-}
+  KEY_PRESS_LEFT: false,
+  KEY_PRESS_RIGHT: false,
+  KEY_PRESS_DOWN: false,
+  KEY_PRESS_X: false,
+  KEY_PRESS_Z: false
+};
 
 /**
  * Sets up our game. Stores references to the piece/board images and canvas, sets up key listening, and starts our game loop.
@@ -210,12 +210,12 @@ function onLoad() {
   boardImage = document.getElementById("gray_piece");
 
   // Every time a key is pressed, store it to be processed in the game loop.
-  document.addEventListener('keydown', function(event) {
-	  keyPresses[event.keyCode] = true;
+  document.addEventListener('keydown', function (event) {
+    keyPresses[event.keyCode] = true;
   });
 
-  document.addEventListener('keyup', function(event) {
-	  keyPresses[event.keyCode] = false;
+  document.addEventListener('keyup', function (event) {
+    keyPresses[event.keyCode] = false;
   });
 
   // Setup a new game.
@@ -306,41 +306,41 @@ function handleInput() {
 
   // Force our player piece down a position if enough time has passed.
   if (frameCount > framesPerDrop) {
-    yDelta ++;
+    yDelta++;
     frameCount = 0;
   }
-  frameCount ++;
+  frameCount++;
 
   // If the player presses left, store a left movement in xDelta.
-  if (keyPresses[KEY_PRESS_LEFT]) { 
-    xDelta --;
-	keyPresses[KEY_PRESS_LEFT] = false;
+  if (keyPresses[KEY_PRESS_LEFT]) {
+    xDelta--;
+    keyPresses[KEY_PRESS_LEFT] = false;
   }
-  
+
   // If the player presses right, store a right movement in xDelta.
-  if (keyPresses[KEY_PRESS_RIGHT]) { 
-    xDelta ++;
-	keyPresses[KEY_PRESS_RIGHT] = false;
+  if (keyPresses[KEY_PRESS_RIGHT]) {
+    xDelta++;
+    keyPresses[KEY_PRESS_RIGHT] = false;
   }
 
   // If the player presses down, store a down movement in YDelta.
-  if (yDelta == 0 && keyPresses[KEY_PRESS_DOWN]) { 
-    yDelta ++;
-	keyPresses[KEY_PRESS_DOWN] = false;
+  if (yDelta == 0 && keyPresses[KEY_PRESS_DOWN]) {
+    yDelta++;
+    keyPresses[KEY_PRESS_DOWN] = false;
   }
-  
+
   // If the player presses Z, rotate counter clockwise.
-  if (keyPresses[KEY_PRESS_Z]) { 
-    rotationDelta --;
-	keyPresses[KEY_PRESS_Z] = false;
+  if (keyPresses[KEY_PRESS_Z]) {
+    rotationDelta--;
+    keyPresses[KEY_PRESS_Z] = false;
   }
 
   // If the player presses X, rotate clockwise.
-  if (keyPresses[KEY_PRESS_X]) { 
-    rotationDelta ++;
-	keyPresses[KEY_PRESS_X] = false;
+  if (keyPresses[KEY_PRESS_X]) {
+    rotationDelta++;
+    keyPresses[KEY_PRESS_X] = false;
   }
-  
+
   // We don't do anything for other key presses, including "up" because they
   // aren't a part of our game play.
 
@@ -367,15 +367,15 @@ function handleInput() {
     var rotationCount = pieces[playerPieceIndex].length;
     var newRotation = playerPieceRotation + rotationDelta;
     if (newRotation < 0) {
-	  newRotation = rotationCount - 1;
+      newRotation = rotationCount - 1;
     }
     else if (newRotation > rotationCount - 1) {
-	  newRotation = 0;
+      newRotation = 0;
     }
 
     // See if our rotation creates a collision, if not, we can update our rotation.
     if (!checkCollision(playerXIndex, playerYIndex + yDelta, newRotation)) {
-  	  playerPieceRotation = newRotation;
+      playerPieceRotation = newRotation;
     }
   }
 
@@ -394,7 +394,7 @@ function handleInput() {
     smoothScrollingValue = 0;
   }
 
-  // Finally, if any x or y deltas still remain (they weren't used through placing a piece or ignored due to collision) 
+  // Finally, if any x or y deltas still remain (they weren't used through placing a piece or ignored due to collision)
   // then apply them to the player's position.
   playerXIndex += xDelta;
   playerYIndex += yDelta;
@@ -410,7 +410,7 @@ function assignRandomPieceToPlayer() {
   // Randomly pick a piece out of our saved pieces array.
   playerPieceIndex = Math.floor(pieces.length * Math.random());
   // Update our count of each piece.
-  pieceCount[playerPieceIndex] ++;
+  pieceCount[playerPieceIndex]++;
   // Reset the rotation.
   playerPieceRotation = 0;
 }
@@ -423,7 +423,7 @@ function updateFramesPerDrop() {
 }
 
 /**
- * Draw the game by filling the background and board area with solid colors, then drawing the board, player piece, scores 
+ * Draw the game by filling the background and board area with solid colors, then drawing the board, player piece, scores
  * and piece totals. Also handles drawing the "game over" text.
  */
 function drawGame() {
@@ -465,15 +465,15 @@ function drawGame() {
  * Draws a two dimensional array such as the board or a piece.
  */
 function draw2DArray(drawArray, xPos, yPos, xOffset, yOffset) {
-  for (var x = 0; x < drawArray[0].length; x ++) {
-    for (var y = 0; y < drawArray.length; y ++) {
+  for (var x = 0; x < drawArray[0].length; x++) {
+    for (var y = 0; y < drawArray.length; y++) {
       var value = drawArray[y][x];
       if (value > 0) {
         var image;
         if (value == 1) {
           image = pieceImage;
         }
-		else {
+        else {
           image = boardImage;
         }
         canvas.drawImage(image, (x + xPos) * 8 + xOffset, (y + yPos) * 8 + yOffset);
@@ -488,25 +488,25 @@ function draw2DArray(drawArray, xPos, yPos, xOffset, yOffset) {
 function checkForLines() {
   // Variable to store the number of lines removed for score calculation.
   var linesRemoved = 0;
-  for (var y = board.length - 1; y >= 0; y --) {
+  for (var y = board.length - 1; y >= 0; y--) {
     // Keep track of how many blocks are in this row; 0 to start.
     var blockCount = 0;
-    for (var x = 0; x < board[0].length; x ++) {
+    for (var x = 0; x < board[0].length; x++) {
       var value = board[y][x];
       if (value == 1) {
-        blockCount ++;
+        blockCount++;
       }
     }
     // If we have a total of 10 blocks in a row, we have a line!
     if (blockCount == 10) {
-      for (var removeY = y; removeY >= 4; removeY --) {
-        for (var x = 0; x < board[0].length; x ++) {
+      for (var removeY = y; removeY >= 4; removeY--) {
+        for (var x = 0; x < board[0].length; x++) {
           // Remove the line from our board, and shift every other piece down.
           board[removeY][x] = board[removeY - 1][x];
         }
       }
-      y ++;
-      linesRemoved ++;
+      y++;
+      linesRemoved++;
     }
   }
 
@@ -521,8 +521,8 @@ function checkForLines() {
  */
 function checkCollision(playerXPosition, playerYPosition, playerRotation) {
   var playerRotatedPiece = pieces[playerPieceIndex][playerRotation];
-  for (var x = 0; x < playerRotatedPiece[0].length; x ++) {
-    for (var y = 0; y < playerRotatedPiece.length; y ++) {
+  for (var x = 0; x < playerRotatedPiece[0].length; x++) {
+    for (var y = 0; y < playerRotatedPiece.length; y++) {
       var value = playerRotatedPiece[y][x];
       if (value > 0 && board[playerYPosition + y][playerXPosition + x] > 0) {
         return true;
@@ -537,8 +537,8 @@ function checkCollision(playerXPosition, playerYPosition, playerRotation) {
  */
 function applyPlayerPieceToBoard(playerXPosition, playerYPosition) {
   var playerPieceRef = pieces[playerPieceIndex][playerPieceRotation];
-  for (var x = 0; x < playerPieceRef[0].length; x ++) {
-    for (var y = 0; y < playerPieceRef.length; y ++) {
+  for (var x = 0; x < playerPieceRef[0].length; x++) {
+    for (var y = 0; y < playerPieceRef.length; y++) {
       var value = playerPieceRef[y][x];
       if (value > 0) {
         board[playerYPosition + y][playerXPosition + x] = value;
@@ -552,8 +552,8 @@ function applyPlayerPieceToBoard(playerXPosition, playerYPosition) {
  */
 function checkGameOver(playerXPosition, playerYPosition) {
   var playerRotatedPiece = pieces[playerPieceIndex][playerPieceRotation];
-  for (var x = 0; x < playerRotatedPiece[0].length; x ++) {
-    for (var y = 0; y < playerRotatedPiece.length; y ++) {
+  for (var x = 0; x < playerRotatedPiece[0].length; x++) {
+    for (var y = 0; y < playerRotatedPiece.length; y++) {
       var value = playerRotatedPiece[y][x];
       if (value > 0 && board[playerYPosition + y][playerXPosition + x] == -1) {
         gameOver = true;
@@ -569,17 +569,17 @@ function drawEachPiece() {
   var y = 0;
   var x = 0;
   // For each piece
-  for (var piece = 0; piece < pieces.length; piece ++) {
+  for (var piece = 0; piece < pieces.length; piece++) {
     // Draw the first rotation of the piece
     var rotatedPiece = pieces[piece][0];
-	draw2DArray(rotatedPiece, 0, 0, x + 10, y + 140);
+    draw2DArray(rotatedPiece, 0, 0, x + 10, y + 140);
 
     // Display the count for this piece.
     canvas.fillStyle = "white";
     canvas.font = "10px Arial";
-    canvas.fillText(""+ pieceCount[piece], 35 + x, 145 + y);
+    canvas.fillText("" + pieceCount[piece], 35 + x, 145 + y);
 
-	// Get our next piece's position on the canvas ready.
+    // Get our next piece's position on the canvas ready.
     y += 40;
     if (y > 150) {
       y = 0;
@@ -597,12 +597,12 @@ function drawEachPiece() {
 function drawAllPieces() {
   var y = 0;
   // Grab each piece.
-  for (var piece = 0; piece < pieces.length; piece ++) {
+  for (var piece = 0; piece < pieces.length; piece++) {
     var x = 0;
     // Grab each rotation.
-    for (var rotation = 0; rotation < pieces[piece].length; rotation ++) {
+    for (var rotation = 0; rotation < pieces[piece].length; rotation++) {
       var rotatedPiece = pieces[piece][rotation];
-	  draw2DArray(rotatedPiece, 0, 0, x, y);
+      draw2DArray(rotatedPiece, 0, 0, x, y);
       x += 50;
     }
     y += 50;
