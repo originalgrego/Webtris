@@ -4,32 +4,9 @@
  */
 
 /**
- * The heart of the game, the game loop calls methods to poll inputs, handle game state and draw the game.
- */
-function gameLoop() {
-  handleInput();
-
-  drawGame();
-}
-
-/**
- * Figure out what key was pressed, and move the piece.
- */
-function handleInput() {
-	
-}
-
-/**
- * Draw the game by filling the background with a solid color, draw the player piece, then draw the board.
- */
-function drawGame() {
-	
-}
-
-/**
  * These are our constant values.
  *
- * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used 
+ * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used
  * instead of "magic values/numbers" across the code.
  */
 
@@ -41,14 +18,14 @@ var KEY_PRESS_X = 88;
 var KEY_PRESS_Z = 90;
 
 /**
- * These are our game state variables. Variables are used to store pieces of data such as numbers, strings, boolean values, etc. 
+ * These are our game state variables. Variables are used to store pieces of data such as numbers, strings, boolean values, etc.
  * A variable can be assigned a value, and the value may be changed via numerous operators: + - * / =.
  */
 
 // We define the shape of our piece here. It is stored as a two dimensional array representing the piece in a specific rotation.
 var piece = [[0, 1, 0],
-			 [0, 1, 0],
-			 [0, 1, 1]];
+             [0, 1, 0],
+             [0, 1, 1]];
 
 // A reference to the canvas we use to draw the game.
 var canvas = null;
@@ -64,29 +41,45 @@ var playerXIndex = 5;
 var playerYIndex = 0;
 // The board's information: a multidimensional array where a wall is represented by 2, and an empty spot by 0.
 var board = [
-    [2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-  ];
+  [2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+  [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+];
+
+/*
+ * Draws a two dimensional array such as the board or a piece.
+ */
+function draw2DArray(drawArray, xPos, yPos) {
+  for (var x = 0; x < drawArray[0].length; x++) {
+    for (var y = 0; y < drawArray.length; y++) {
+      var value = drawArray[y][x];
+      var image;
+      if (value == 1) {
+        image = pieceImage;
+      }
+      canvas.drawImage(image, (x + xPos) * 8, (y + yPos) * 8);
+    }
+  }
+}
 
 /**
  * Sets up our game. Stores references to the piece/board images and canvas, sets up key listening, and starts our game loop.
@@ -102,7 +95,30 @@ function onLoad() {
   boardImage = document.getElementById("gray_piece");
 
   // Every time a key is pressed, store it to be processed in the game loop.
-  document.addEventListener('keydown', function(event) {
+  document.addEventListener('keydown', function (event) {
     playerKeyPress = event.keyCode;
   });
+}
+
+/**
+ * The heart of the game, the game loop calls methods to poll inputs, handle game state and draw the game.
+ */
+function gameLoop() {
+  handleInput();
+
+  drawGame();
+}
+
+/**
+ * Figure out what key was pressed, and move the piece.
+ */
+function handleInput() {
+
+}
+
+/**
+ * Draw the game by filling the background with a solid color, draw the player piece, then draw the board.
+ */
+function drawGame() {
+
 }
