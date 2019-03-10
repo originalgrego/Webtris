@@ -72,11 +72,40 @@ function draw2DArray(drawArray, xPos, yPos) {
   for (var x = 0; x < drawArray[0].length; x++) {
     for (var y = 0; y < drawArray.length; y++) {
       var value = drawArray[y][x];
-      var image;
-      if (value == 1) {
+      if (value > 0) {
+        var image;
         image = pieceImage;
+        canvas.drawImage(image, (x + xPos) * 8, (y + yPos) * 8);
       }
-      canvas.drawImage(image, (x + xPos) * 8, (y + yPos) * 8);
+    }
+  }
+}
+
+/**
+ * Check if there is a collision between the player's piece at a position on the board, returns true if a collision occurred.
+ */
+function checkCollision(playerXPosition, playerYPosition) {
+  for (var x = 0; x < piece[0].length; x ++) {
+    for (var y = 0; y < piece.length; y ++) {
+      var value = piece[y][x];
+      if (value > 0 && board[playerYPosition + y][playerXPosition + x] > 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Add the new player piece to its spot on the board.
+ */
+function applyPlayerPieceToBoard(playerXPosition, playerYPosition) {
+  for (var x = 0; x < piece[0].length; x++) {
+    for (var y = 0; y < piece.length; y++) {
+      var value = piece[y][x];
+      if (value > 0) {
+        board[playerYPosition + y][playerXPosition + x] = value;
+      }
     }
   }
 }
