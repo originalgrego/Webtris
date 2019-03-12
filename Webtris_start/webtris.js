@@ -29,6 +29,8 @@ var piece = [[0, 1, 0],
 
 // A reference to the canvas we use to draw the game.
 var canvas = null;
+// Whether or not we have hit the Game Over state. Is either true or false.
+var gameOver = false;
 // The image for a player piece.
 var pieceImage = null;
 // The image for the board's wall piece.
@@ -40,30 +42,7 @@ var playerXIndex = 5;
 // The Y position of our active playing piece, stored as an index into our board array, it starts off at the top at position 0.
 var playerYIndex = 0;
 // The board's information: a multidimensional array where a wall is represented by 2, and an empty spot by 0.
-var board = [
-  [2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-  [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-];
+var board = null;
 
 /*
  * Draws a two dimensional array such as the board or a piece.
@@ -111,6 +90,20 @@ function applyPlayerPieceToBoard(playerXPosition, playerYPosition) {
 }
 
 /**
+ * Check to see if a piece overlaps with the game over zone; if it does it's game over.
+ */
+function checkGameOver(playerXPosition, playerYPosition) {
+  for (var x = 0; x < piece[0].length; x++) {
+    for (var y = 0; y < piece.length; y++) {
+      var value = piece[y][x];
+      if (value > 0 && board[playerYPosition + y][playerXPosition + x] == -1) {
+        gameOver = true;
+      }
+    }
+  }
+}
+
+/**
  * Sets up our game. Stores references to the piece/board images and canvas, sets up key listening, and starts our game loop.
  */
 function onLoad() {
@@ -127,13 +120,69 @@ function onLoad() {
   document.addEventListener('keydown', function (event) {
     playerKeyPress = event.keyCode;
   });
+
+  // Setup a new game.
+  newGame();
+}
+
+/**
+ * We define the structure of the board in a method so a new one can be created whenever a new game begins. A constant for
+ * the board's definition would require us to copy to a board array each time the game starts, creating a new instance of
+ * the data is simpler.
+ */
+function getNewBoard() {
+  return [
+    [0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0],
+    [0, 0, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0],
+    [2, 2, 2, 2,-1,-1,-1,-1, 2, 2, 2, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+  ];
+}
+
+/**
+ * Sets up a new game by initializing all of the game state variables.
+ */
+function newGame() {
+  // Create and assign a new board.
+  board = getNewBoard();
+  // Reset our gameOver flag.
+  gameOver = false;
 }
 
 /**
  * The heart of the game, the game loop calls methods to poll inputs, handle game state and draw the game.
  */
 function gameLoop() {
-  handleInput();
+  // If our game isn't over, figure out what the next move is.
+  if (!gameOver) {
+    handleInput();
+  }
+  else {
+    // If our game is over, and our player wants to start a new one, load it up!
+    if (keyPresses[KEY_PRESS_DOWN] || keyPresses[KEY_PRESS_Z] || keyPresses[KEY_PRESS_X]) {
+      newGame();
+    }
+  }
 
   drawGame();
 }
