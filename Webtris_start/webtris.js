@@ -9,7 +9,6 @@
  * Constants are a necessity to good programming as they allow later changes to be made system wide as long as the constant is used
  * instead of "magic values/numbers" across the code.
  */
-
 // ASCII key codes stored as constants for readability.
 var KEY_PRESS_LEFT = 37;
 var KEY_PRESS_RIGHT = 39;
@@ -191,7 +190,14 @@ function gameLoop() {
  * Figure out what key was pressed, and move the piece.
  */
 function handleInput() {
+  var xDelta = 0;
+  var yDelta = 0;
 
+
+
+  if (xDelta != 0 || yDelta != 0) {
+
+  }
 }
 
 /**
