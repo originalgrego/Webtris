@@ -43,65 +43,6 @@ var playerYIndex = 0;
 // The board's information: a multidimensional array where a wall is represented by 2, and an empty spot by 0.
 var board = null;
 
-/*
- * Draws a two dimensional array such as the board or a piece.
- */
-function draw2DArray(drawArray, xPos, yPos) {
-  for (var x = 0; x < drawArray[0].length; x++) {
-    for (var y = 0; y < drawArray.length; y++) {
-      var value = drawArray[y][x];
-      if (value > 0) {
-        var image;
-        image = pieceImage;
-        canvas.drawImage(image, (x + xPos) * 8, (y + yPos) * 8);
-      }
-    }
-  }
-}
-
-/**
- * Check if there is a collision between the player's piece at a position on the board, returns true if a collision occurred.
- */
-function checkCollision(playerXPosition, playerYPosition) {
-  for (var x = 0; x < piece[0].length; x ++) {
-    for (var y = 0; y < piece.length; y ++) {
-      var value = piece[y][x];
-      if (value > 0 && board[playerYPosition + y][playerXPosition + x] > 0) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-/**
- * Add the new player piece to its spot on the board.
- */
-function applyPlayerPieceToBoard(playerXPosition, playerYPosition) {
-  for (var x = 0; x < piece[0].length; x++) {
-    for (var y = 0; y < piece.length; y++) {
-      var value = piece[y][x];
-      if (value > 0) {
-        board[playerYPosition + y][playerXPosition + x] = value;
-      }
-    }
-  }
-}
-
-/**
- * Check to see if a piece overlaps with the game over zone; if it does it's game over.
- */
-function checkGameOver(playerXPosition, playerYPosition) {
-  for (var x = 0; x < piece[0].length; x++) {
-    for (var y = 0; y < piece.length; y++) {
-      var value = piece[y][x];
-      if (value > 0 && board[playerYPosition + y][playerXPosition + x] == -1) {
-        gameOver = true;
-      }
-    }
-  }
-}
-
 /**
  * Sets up our game. Stores references to the piece/board images and canvas, sets up key listening, and starts our game loop.
  */
@@ -184,6 +125,65 @@ function gameLoop() {
   }
 
   drawGame();
+}
+
+/**
+ * Check to see if a piece overlaps with the game over zone; if it does it's game over.
+ */
+function checkGameOver(playerXPosition, playerYPosition) {
+  for (var x = 0; x < piece[0].length; x++) {
+    for (var y = 0; y < piece.length; y++) {
+      var value = piece[y][x];
+      if (value > 0 && board[playerYPosition + y][playerXPosition + x] == -1) {
+        gameOver = true;
+      }
+    }
+  }
+}
+
+/**
+ * Check if there is a collision between the player's piece at a position on the board, returns true if a collision occurred.
+ */
+function checkCollision(playerXPosition, playerYPosition) {
+  for (var x = 0; x < piece[0].length; x ++) {
+    for (var y = 0; y < piece.length; y ++) {
+      var value = piece[y][x];
+      if (value > 0 && board[playerYPosition + y][playerXPosition + x] > 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Add the new player piece to its spot on the board.
+ */
+function applyPlayerPieceToBoard(playerXPosition, playerYPosition) {
+  for (var x = 0; x < piece[0].length; x++) {
+    for (var y = 0; y < piece.length; y++) {
+      var value = piece[y][x];
+      if (value > 0) {
+        board[playerYPosition + y][playerXPosition + x] = value;
+      }
+    }
+  }
+}
+
+/*
+ * Draws a two dimensional array such as the board or a piece.
+ */
+function draw2DArray(drawArray, xPos, yPos) {
+  for (var x = 0; x < drawArray[0].length; x++) {
+    for (var y = 0; y < drawArray.length; y++) {
+      var value = drawArray[y][x];
+      if (value > 0) {
+        var image;
+        image = pieceImage;
+        canvas.drawImage(image, (x + xPos) * 8, (y + yPos) * 8);
+      }
+    }
+  }
 }
 
 /**
